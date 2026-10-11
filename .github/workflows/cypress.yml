@@ -1,0 +1,29 @@
+name: Testes Cypress
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  cypress:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - run: npm install
+
+      - run: npx cypress run
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: resultados
+          path: |
+            ofertas.json
+            cypress/screenshots
+          if-no-files-found: ignore
